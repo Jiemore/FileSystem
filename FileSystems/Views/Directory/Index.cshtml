@@ -1,0 +1,14 @@
+﻿@model IEnumerable<FileSystems.ViewModel.DirectoryViewModel>
+
+@{
+    ViewBag.Title = "InRule";
+    var model = Model.First();
+}
+
+
+<h1> 
+    <span>
+        @Html.ActionLink(@model.Name, "Details", new { id = @model.Id }, new { @class = "spanHeader"}) 
+    </span>
+</h1>
+

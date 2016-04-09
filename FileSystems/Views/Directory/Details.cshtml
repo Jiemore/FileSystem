@@ -1,0 +1,88 @@
+﻿@model FileSystems.ViewModel.DirectoryDetailsViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<table>
+    <tr>
+        <th style="display:inline-block">
+            <h4>
+                @Html.ActionLink("$rootIndex", "Index", null, new { @class = "navMenu" })
+                @foreach (var item in Model.NavigationMenu)
+                {
+                    @Html.ActionLink(">>" + item.Value.Name, "MenuNavigation",
+                                  new { id = item.Value.id}, new { @class = "navMenu" })
+                }
+            </h4>
+        </th>
+    </tr>
+</table>
+<table>
+    <tr>
+        <th style="text-align:center">
+            <h6>Directories</h6> &nbsp; @Html.ActionLink("Create New", "Create", new { parentId = Model.ParentId })
+        </th>
+    </tr>
+
+    @foreach (var item in Model.ChildrenDirectory)
+    {
+        <tr>
+            <td>
+                @Html.HiddenFor(modelitem => item.Id)
+                @Html.HiddenFor(modelitem => item.ParentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedAt)
+            </td>
+            <td>
+                @Html.ActionLink("Rename", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { parentId = item.ParentId, id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+<table>
+    <tr>
+        <th style="text-align:center">
+            <h6>Files</h6> &nbsp;
+            @Html.ActionLink("UploadFiles", "Upload", "Files")
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Files)
+    {
+        <tr>
+            <td>
+                @Html.HiddenFor(modelitem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastModifiedAt)
+            </td>            
+            <td>
+                @Html.DisplayFor(modelItem => item.Size)
+            </td>
+            <td>
+                @Html.ActionLink("Download", "Download", "Files", new { id = item.Id }, null) |
+                @Html.ActionLink("Rename/Change(EXT)", "Edit", "Files", new { id = item.Id }, null) |
+                @Html.ActionLink("Delete", "Delete", "Files", new { directoryId = Model.CurrentDirectoryId , fileId = item.Id }, null)
+            </td>
+        </tr>
+    }
+
+</table>

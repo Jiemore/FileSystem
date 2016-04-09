@@ -1,0 +1,22 @@
+﻿@model FileSystems.ViewModel.FileViewModel
+
+@{
+    ViewBag.Title = "Upload";
+}
+
+
+<form action="" method="post" enctype="multipart/form-data">
+
+    <label for="file1">Filename:</label>
+    <input type="file" name="files" id="file1" />
+
+    <label for="file2">Filename:</label>
+    <input type="file" name="files" id="file2" />
+
+    <label for="file2">Filename:</label>
+    <input type="file" name="files" id="file3" />
+    &nbsp;
+    <br>
+    <input  style="float:left;" type="submit"  value="upload"/>
+</form>
+
