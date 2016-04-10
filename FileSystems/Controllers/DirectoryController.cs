@@ -28,10 +28,17 @@ namespace FileSystems.Controllers
         public ActionResult Index()
         {
             _webrepository.Remove<NavigationListViewModel>();
-            var model = GetDirectory().Where(x => x.ParentId.Equals(0)).ToList();         
+            var model = GetDirectory();
+            if(model.Count == 0)
+            {
+                return InitializeDirectory();
+            }
+            
+            var modelItem = model.Where(x => x.ParentId.Equals(0)).ToList();         
             var viewModel = DirectoryViewModel.CreateViewModelList(model);           
             return View(viewModel);
         }
+                
         //
         // GET: /Directory/Details/5
         public ActionResult Details(long id = 0)
@@ -121,6 +128,20 @@ namespace FileSystems.Controllers
 
 
         #region PrivateMethods
+        private ActionResult InitializeDirectory()
+        {
+
+            var directory = new Directory()
+            {
+                Name = "$root",
+                CreatedAt = DateTime.Now,
+                ParentId = 0,
+
+            };
+            _directoryRepository.CreateDirectory(directory);
+            return RedirectToAction("Index");
+        }
+
         private ActionResult ReturnToDetails(long parentId)
         {
             return RedirectToAction("Details", new { id = parentId });
@@ -128,7 +149,7 @@ namespace FileSystems.Controllers
         
         private List<Directory> GetDirectory()
         {
-            return _directoryRepository.GetDirectories().ToList(); ;
+            return _directoryRepository.GetDirectories().ToList();
         }
 
         private void SetNavigationMenu(long id, List<Directory> data, DirectoryDetailsViewModel detailsViewModel)
